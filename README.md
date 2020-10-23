@@ -12,10 +12,10 @@ To start a local development environment, run the following commands:
 
 ```shell
 # Clone repository (or your fork)
-git clone git@github.com:jakehamilton/scrumfi.sh.git
+git clone git@github.com:jakehamilton/retrospectacle.app.git
 
 # Change directory into the project
-cd scrumfi.sh
+cd retrospectacle.app
 
 # Install dependencies
 npm install
