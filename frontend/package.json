@@ -1,11 +1,11 @@
 {
     "name": "frontend",
     "version": "1.0.0",
-    "description": "The frontend for scrumfi.sh.",
+    "description": "The frontend for retrospectacle.app.",
     "main": "public/scripts/bundle.mjs",
     "repository": {
         "type": "git",
-        "url": "github.com/jakehamilton/scrumfi.sh"
+        "url": "github.com/jakehamilton/retrospectacle.app"
     },
     "author": "Jake Hamilton <jake.hamilton@hey.com>",
     "license": "Apache-2.0",
