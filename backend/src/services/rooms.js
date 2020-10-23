@@ -66,6 +66,7 @@ class RoomsService extends Service {
                     key,
                 },
                 state: {
+                    hidden: true,
                     item: null,
                     items: [
                         {
@@ -167,6 +168,22 @@ class RoomsService extends Service {
         this.update(id);
     }
 
+    unhide(id, socket, key) {
+        const room = this.rooms.get(id);
+
+        if (!room) {
+            return;
+        }
+
+        if (room.owner.key !== key) {
+            return;
+        }
+
+        room.state.hidden = false;
+
+        this.update(id);
+    }
+
     action(id, socket, key, itemKey, action) {
         const room = this.rooms.get(id);
 
@@ -231,12 +248,17 @@ class RoomsService extends Service {
             };
         });
 
+        const userItems = room.state.hidden
+            ? room.state.items.filter((item) => item.shown)
+            : room.state.items;
+
         for (const socket of room.users) {
             if (socket.id === room.owner.socket.id) {
                 socket.emit("room:update", {
                     id,
                     owner: room.owner.socket.id,
                     state: {
+                        hidden: room.state.hidden,
                         item: room.state.item,
                         items: room.state.items,
                     },
@@ -247,7 +269,9 @@ class RoomsService extends Service {
                     id,
                     owner: room.owner.socket.id,
                     state: {
+                        hidden: room.state.hidden,
                         item: room.state.item,
+                        items: userItems,
                     },
                     users,
                 });

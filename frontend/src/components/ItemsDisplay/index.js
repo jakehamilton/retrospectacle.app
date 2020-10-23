@@ -19,8 +19,8 @@ const ItemColumnClass = ({ pad }) => {
         margin-left: ${pad(3)}px;
         margin-right: ${pad(3)}px;
 
-        @media screen and (max-width: 1155px) {
-            margin-top: ${pad(6)}px;
+        @media screen and (max-width: 1200px) {
+            margin-bottom: ${pad(6)}px;
         }
     `;
 };
@@ -79,7 +79,7 @@ const ColumnItemActionClass = ({ theme, pad }) => {
     return css``;
 };
 
-const ItemColumn = ({ items, category, onShow, onDelete }) => {
+const ItemColumn = ({ items, category, onShow, onDelete, controls }) => {
     const theme = useTheme();
     const { socket, user } = useSocket();
 
@@ -94,46 +94,54 @@ const ItemColumn = ({ items, category, onShow, onDelete }) => {
                         <Fragment>
                             <Gap vertical size={2} />
                             <Block key={item.key} className={ColumnItemClass()}>
-                                <div className={ColumnItemControlsClass(theme)}>
-                                    <div className={ItemControlsLeft()}>
-                                        <Tooltip
-                                            placement="top"
-                                            delay={100}
-                                            text={
-                                                item.shown
-                                                    ? "Already Shown"
-                                                    : "Not Shown Yet"
-                                            }
-                                        >
-                                            <div
-                                                className={ColumnItemReadIconClass(
-                                                    {
-                                                        ...theme,
-                                                        item,
-                                                    }
-                                                )}
-                                            />
-                                        </Tooltip>
+                                {controls ? (
+                                    <div
+                                        className={ColumnItemControlsClass(
+                                            theme
+                                        )}
+                                    >
+                                        <div className={ItemControlsLeft()}>
+                                            <Tooltip
+                                                placement="top"
+                                                delay={100}
+                                                text={
+                                                    item.shown
+                                                        ? "Already Shown"
+                                                        : "Not Shown Yet"
+                                                }
+                                            >
+                                                <div
+                                                    className={ColumnItemReadIconClass(
+                                                        {
+                                                            ...theme,
+                                                            item,
+                                                        }
+                                                    )}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div className={ItemControlsRight()}>
+                                            <Button
+                                                variant="text"
+                                                onClick={() => {
+                                                    onDelete(item.key);
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                            <Button
+                                                variant="filled"
+                                                onClick={() => {
+                                                    onShow(item.key);
+                                                }}
+                                            >
+                                                Show
+                                            </Button>
+                                        </div>
                                     </div>
-                                    <div className={ItemControlsRight()}>
-                                        <Button
-                                            variant="text"
-                                            onClick={() => {
-                                                onDelete(item.key);
-                                            }}
-                                        >
-                                            Delete
-                                        </Button>
-                                        <Button
-                                            variant="filled"
-                                            onClick={() => {
-                                                onShow(item.key);
-                                            }}
-                                        >
-                                            Show
-                                        </Button>
-                                    </div>
-                                </div>
+                                ) : (
+                                    <Gap vertical size={1} />
+                                )}
                                 <Block
                                     color="background.light"
                                     className={ColumnItemCommentClass(theme)}
@@ -172,7 +180,7 @@ const ItemsDisplayClass = ({ pad }) => {
     `;
 };
 
-const ItemsDisplay = ({ items, onShow, onDelete }) => {
+const ItemsDisplay = ({ items, onShow, onDelete, controls = true }) => {
     const theme = useTheme();
 
     const sortedItems = useMemo(() => {
@@ -210,18 +218,21 @@ const ItemsDisplay = ({ items, onShow, onDelete }) => {
                 category="Needs Improvement"
                 onShow={onShow}
                 onDelete={onDelete}
+                controls={controls}
             />
             <ItemColumn
                 items={sortedItems.keepDoing}
                 category="Keep Doing"
                 onShow={onShow}
                 onDelete={onDelete}
+                controls={controls}
             />
             <ItemColumn
                 items={sortedItems.compliment}
                 category="Compliments"
                 onShow={onShow}
                 onDelete={onDelete}
+                controls={controls}
             />
         </div>
     );

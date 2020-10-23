@@ -31,7 +31,8 @@ const main = async () => {
         require("./components/websocket/room/show"),
         require("./components/websocket/room/submit"),
         require("./components/websocket/room/action"),
-        require("./components/websocket/room/delete")
+        require("./components/websocket/room/delete"),
+        require("./components/websocket/room/unhide")
     );
 
     http.listen(PORT);

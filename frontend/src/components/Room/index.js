@@ -5,10 +5,7 @@ import cn from "classnames";
 import { css } from "goober";
 import { H1, H4, Gap, Button, Text } from "@jakehamilton/ui";
 
-import Waiting from "../Waiting";
 import useSocket from "../../hooks/useSocket";
-import Guessing from "../Guessing";
-import Results from "../Results";
 import RoomOwnerContent from "../RoomOwnerContent";
 import RoomUserContent from "../RoomUserContent";
 
@@ -17,7 +14,8 @@ const RoomClass = css`
     align-items: center;
     flex-direction: column;
     width: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 `;
 
 const LoadingClass = css`

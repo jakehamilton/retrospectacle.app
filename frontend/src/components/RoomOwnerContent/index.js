@@ -1,5 +1,5 @@
 import { h, Fragment } from "preact";
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useMemo } from "preact/hooks";
 import { Link } from "preact-router";
 import { css } from "goober";
 import { Gap, Text, Button, useTheme } from "@jakehamilton/ui";
@@ -50,8 +50,6 @@ const RoomOwnerContentClass = ({ pad }) => {
         width: 100%;
         padding-left: ${pad(1)}px;
         padding-right: ${pad(1)}px;
-        overflow-x: hidden;
-        overflow-y: auto;
     `;
 };
 
@@ -99,6 +97,34 @@ const RoomOwnerContent = ({ room }) => {
     const { socket, user } = useSocket();
     const url = `${document.location.host}/#/room/${room.id}`;
 
+    const sortedItems = useMemo(() => {
+        const sortedItems = room.state.items.reduce(
+            (sorted, item) => {
+                switch (item.kind) {
+                    default:
+                    case "needs-improvement":
+                        sorted.needsImprovement.push(item);
+                        break;
+                    case "keep-doing":
+                        sorted.keepDoing.push(item);
+                        break;
+                    case "compliment":
+                        sorted.compliment.push(item);
+                        break;
+                }
+
+                return sorted;
+            },
+            {
+                needsImprovement: [],
+                keepDoing: [],
+                compliment: [],
+            }
+        );
+
+        return sortedItems;
+    }, [room.state.items]);
+
     const handleChangeActionItem = ({ item, action }) => {
         socket.emit("room:action", {
             id: room.id,
@@ -124,7 +150,61 @@ const RoomOwnerContent = ({ room }) => {
         });
     };
 
-    const handleNextItem = () => {};
+    const handleNextItem = () => {
+        const needsImprovement = sortedItems.needsImprovement.filter(
+            (item) => !item.shown
+        );
+
+        if (needsImprovement.length > 0) {
+            const index = Math.floor(Math.random() * needsImprovement.length);
+            const item = needsImprovement[index];
+
+            socket.emit("room:show", {
+                id: room.id,
+                key: user.key,
+                item: item.key,
+            });
+
+            return;
+        }
+
+        const keepDoing = sortedItems.keepDoing.filter((item) => !item.shown);
+
+        if (keepDoing.length > 0) {
+            const index = Math.floor(Math.random() * keepDoing.length);
+            const item = keepDoing[index];
+
+            socket.emit("room:show", {
+                id: room.id,
+                key: user.key,
+                item: item.key,
+            });
+
+            return;
+        }
+
+        const compliment = sortedItems.compliment.filter((item) => !item.shown);
+
+        if (compliment.length > 0) {
+            const index = Math.floor(Math.random() * compliment.length);
+            const item = compliment[index];
+
+            socket.emit("room:show", {
+                id: room.id,
+                key: user.key,
+                item: item.key,
+            });
+
+            return;
+        }
+    };
+
+    const handleUnhideItems = () => {
+        socket.emit("room:unhide", {
+            id: room.id,
+            key: user.key,
+        });
+    };
 
     return (
         <div className={RoomOwnerContentClass(theme)}>
@@ -141,6 +221,14 @@ const RoomOwnerContent = ({ room }) => {
                     </Text>
                 </div>
                 <div className={InfoRightClass()}>
+                    {room.state.hidden ? (
+                        <Fragment>
+                            <Button variant="text" onClick={handleUnhideItems}>
+                                Unhide Items
+                            </Button>
+                            <Gap horizontal size={1} />
+                        </Fragment>
+                    ) : null}
                     <Button
                         onClick={handleNextItem}
                         disabled={room.state.items.every((item) => item.shown)}

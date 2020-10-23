@@ -15,7 +15,7 @@
         "build": "microbundle --alias react=preact/compat,react-dom=preact/compat --define process.env.NODE_ENV=production,process.env.API_HOST=\"\",process.env.API_PORT=\"\""
     },
     "devDependencies": {
-        "@jakehamilton/ui": "^1.7.0",
+        "@jakehamilton/ui": "^1.8.0",
         "@material-ui/icons": "^4.9.1",
         "classnames": "^2.2.6",
         "goober": "^2.0.6",
