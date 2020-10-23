@@ -1,7 +1,7 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "description": "The backend for scrumfi.sh.",
+    "description": "The backend for retrospectacle.app.",
     "main": "index.js",
     "scripts": {
         "dev": "LOG_LEVEL=TRACE nodemon ./src/index.js",
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "github.com/jakehamilton/scrumfi.sh"
+        "url": "github.com/jakehamilton/retrospectacle.app"
     },
     "author": "Jake Hamilton <jake.hamilton@hey.com>",
     "license": "Apache-2.0",

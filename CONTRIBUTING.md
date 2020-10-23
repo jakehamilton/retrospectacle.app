@@ -28,20 +28,20 @@ work on, please comment on the issue and mention `@jakehamilton`.
 Once you have an issue assigned to you, you're ready to move on!
 
 To work on the project, you'll first need to create your own fork.
-To do so, navigate [here](https://github.com/jakehamilton/scrumfi.sh/fork).
+To do so, navigate [here](https://github.com/jakehamilton/retrospectacle.app/fork).
 
 Once your fork is ready, clone it on your local machine.
 
 ```shell
 # Make sure you use your own username
-git clone git@github.com:YOUR_USERNAME/scrumfi.sh.git
+git clone git@github.com:YOUR_USERNAME/retrospectacle.app.git
 ```
 
 Now enter the project you cloned and install its dependencies.
 
 ```shell
 # Enter project
-cd scrumfi.sh
+cd retrospectacle.app
 
 # Install dependencies
 npm install

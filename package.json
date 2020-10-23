@@ -1,18 +1,18 @@
 {
-    "name": "scrumfi.sh",
+    "name": "retrospectacle.app",
     "version": "1.0.0",
     "description": "A helper for determining ticket points.",
     "main": "index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jakehamilton/scrumfi.sh.git"
+        "url": "git+https://github.com/jakehamilton/retrospectacle.app.git"
     },
     "author": "Jake Hamilton <jake.hamilton@hey.com>",
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/jakehamilton/scrumfi.sh/issues"
+        "url": "https://github.com/jakehamilton/retrospectacle.app/issues"
     },
-    "homepage": "https://github.com/jakehamilton/scrumfi.sh#readme",
+    "homepage": "https://github.com/jakehamilton/retrospectacle.app#readme",
     "prettier": {
         "tabWidth": 4
     },

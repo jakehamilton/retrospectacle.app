@@ -1,3 +1,3 @@
 const littlelog = require("@littlethings/log");
 
-module.exports = littlelog.create("scrumfi.sh");
+module.exports = littlelog.create("retrospectacle.app");
