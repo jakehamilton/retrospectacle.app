@@ -68,29 +68,7 @@ class RoomsService extends Service {
                 state: {
                     hidden: true,
                     item: null,
-                    items: [
-                        {
-                            kind: "needs-improvement",
-                            comment: "Something important here.",
-                            action: "",
-                            shown: false,
-                            key: 0,
-                        },
-                        {
-                            kind: "keep-doing",
-                            comment: "Something important here.",
-                            action: "",
-                            shown: false,
-                            key: 1,
-                        },
-                        {
-                            kind: "compliment",
-                            comment: "Something important here.",
-                            action: "",
-                            shown: true,
-                            key: 2,
-                        },
-                    ],
+                    items: [],
                 },
                 users: new Set(),
             });
