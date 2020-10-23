@@ -230,6 +230,21 @@ const RoomUserContent = ({ room }) => {
         headingText = "Waiting For Owner";
     }
 
+    let newItemPlaceholder;
+
+    switch (kind) {
+        default:
+        case "needs-improvement":
+            newItemPlaceholder = "I think we can improve on...";
+            break;
+        case "keep-doing":
+            newItemPlaceholder = "We should continue doing...";
+            break;
+        case "compliment":
+            newItemPlaceholder = "I really liked...";
+            break;
+    }
+
     return (
         <div className={RoomUserContentClass(theme)}>
             <Gap vertical size={6} />
@@ -282,7 +297,7 @@ const RoomUserContent = ({ room }) => {
                                         theme
                                     )}
                                     value={value}
-                                    placeholder="I think we can improve on..."
+                                    placeholder={newItemPlaceholder}
                                     onChange={(event) =>
                                         setValue(event.target.value)
                                     }

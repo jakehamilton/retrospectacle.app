@@ -9,6 +9,7 @@ import {
     Block,
     Tooltip,
     Button,
+    H5,
 } from "@jakehamilton/ui";
 import useSocket from "../../hooks/useSocket";
 
@@ -26,11 +27,19 @@ const ItemColumnClass = ({ pad }) => {
 };
 
 const ColumnTitleClass = () => {
-    return css``;
+    return css`
+        text-align: center;
+    `;
 };
 
 const ColumnItemsClass = () => {
     return css``;
+};
+
+const NoItemsClass = () => {
+    return css`
+        text-align: center;
+    `;
 };
 
 const ColumnItemClass = () => {
@@ -89,81 +98,99 @@ const ItemColumn = ({ items, category, onShow, onDelete, controls }) => {
                 <H3>{category}</H3>
             </div>
             <div className={ColumnItemsClass()}>
-                {items.map((item) => {
-                    return (
-                        <Fragment>
-                            <Gap vertical size={2} />
-                            <Block key={item.key} className={ColumnItemClass()}>
-                                {controls ? (
-                                    <div
-                                        className={ColumnItemControlsClass(
+                {items.length === 0 ? (
+                    <Fragment>
+                        <Gap vertical size={2} />
+                        <H5 color="text.light" className={NoItemsClass()}>
+                            No Items
+                        </H5>
+                    </Fragment>
+                ) : (
+                    items.map((item) => {
+                        return (
+                            <Fragment>
+                                <Gap vertical size={2} />
+                                <Block
+                                    key={item.key}
+                                    className={ColumnItemClass()}
+                                >
+                                    {controls ? (
+                                        <div
+                                            className={ColumnItemControlsClass(
+                                                theme
+                                            )}
+                                        >
+                                            <div className={ItemControlsLeft()}>
+                                                <Tooltip
+                                                    placement="top"
+                                                    delay={100}
+                                                    text={
+                                                        item.shown
+                                                            ? "Already Shown"
+                                                            : "Not Shown Yet"
+                                                    }
+                                                >
+                                                    <div
+                                                        className={ColumnItemReadIconClass(
+                                                            {
+                                                                ...theme,
+                                                                item,
+                                                            }
+                                                        )}
+                                                    />
+                                                </Tooltip>
+                                            </div>
+                                            <div
+                                                className={ItemControlsRight()}
+                                            >
+                                                <Button
+                                                    variant="text"
+                                                    onClick={() => {
+                                                        onDelete(item.key);
+                                                    }}
+                                                >
+                                                    Delete
+                                                </Button>
+                                                <Button
+                                                    variant="filled"
+                                                    onClick={() => {
+                                                        onShow(item.key);
+                                                    }}
+                                                >
+                                                    Show
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <Gap vertical size={1} />
+                                    )}
+                                    <Block
+                                        color="background.light"
+                                        className={ColumnItemCommentClass(
                                             theme
                                         )}
                                     >
-                                        <div className={ItemControlsLeft()}>
-                                            <Tooltip
-                                                placement="top"
-                                                delay={100}
-                                                text={
-                                                    item.shown
-                                                        ? "Already Shown"
-                                                        : "Not Shown Yet"
-                                                }
-                                            >
-                                                <div
-                                                    className={ColumnItemReadIconClass(
-                                                        {
-                                                            ...theme,
-                                                            item,
-                                                        }
-                                                    )}
-                                                />
-                                            </Tooltip>
-                                        </div>
-                                        <div className={ItemControlsRight()}>
-                                            <Button
-                                                variant="text"
-                                                onClick={() => {
-                                                    onDelete(item.key);
-                                                }}
-                                            >
-                                                Delete
-                                            </Button>
-                                            <Button
-                                                variant="filled"
-                                                onClick={() => {
-                                                    onShow(item.key);
-                                                }}
-                                            >
-                                                Show
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <Gap vertical size={1} />
-                                )}
-                                <Block
-                                    color="background.light"
-                                    className={ColumnItemCommentClass(theme)}
-                                >
-                                    {item.comment}
-                                </Block>
-                                {item.action === "" ? null : (
-                                    <Block
-                                        padding={2}
-                                        color="primary"
-                                        className={ColumnItemActionClass(theme)}
-                                    >
-                                        <Text color="primary.text">
-                                            {item.action}
-                                        </Text>
+                                        {item.comment}
                                     </Block>
-                                )}
-                            </Block>
-                            <Gap vertical size={2} />
-                        </Fragment>
-                    );
-                })}
+                                    {item.action === "" ? null : (
+                                        <Block
+                                            padding={2}
+                                            color="primary"
+                                            className={ColumnItemActionClass(
+                                                theme
+                                            )}
+                                        >
+                                            <Text color="primary.text">
+                                                {item.action}
+                                            </Text>
+                                        </Block>
+                                    )}
+                                </Block>
+                                <Gap vertical size={2} />
+                            </Fragment>
+                        );
+                    })
+                )}
             </div>
         </div>
     );
@@ -213,27 +240,33 @@ const ItemsDisplay = ({ items, onShow, onDelete, controls = true }) => {
 
     return (
         <div className={ItemsDisplayClass(theme)}>
-            <ItemColumn
-                items={sortedItems.needsImprovement}
-                category="Needs Improvement"
-                onShow={onShow}
-                onDelete={onDelete}
-                controls={controls}
-            />
-            <ItemColumn
-                items={sortedItems.keepDoing}
-                category="Keep Doing"
-                onShow={onShow}
-                onDelete={onDelete}
-                controls={controls}
-            />
-            <ItemColumn
-                items={sortedItems.compliment}
-                category="Compliments"
-                onShow={onShow}
-                onDelete={onDelete}
-                controls={controls}
-            />
+            {items.length === 0 ? (
+                <H3>No Items Yet</H3>
+            ) : (
+                <Fragment>
+                    <ItemColumn
+                        items={sortedItems.needsImprovement}
+                        category="Needs Improvement"
+                        onShow={onShow}
+                        onDelete={onDelete}
+                        controls={controls}
+                    />
+                    <ItemColumn
+                        items={sortedItems.keepDoing}
+                        category="Keep Doing"
+                        onShow={onShow}
+                        onDelete={onDelete}
+                        controls={controls}
+                    />
+                    <ItemColumn
+                        items={sortedItems.compliment}
+                        category="Compliments"
+                        onShow={onShow}
+                        onDelete={onDelete}
+                        controls={controls}
+                    />
+                </Fragment>
+            )}
         </div>
     );
 };
