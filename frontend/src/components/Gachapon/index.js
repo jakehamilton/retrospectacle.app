@@ -1,6 +1,6 @@
 import { h } from "preact";
 import cn from "classnames";
-import { css } from "goober";
+import { css, keyframes } from "goober";
 import { useTheme } from "@jakehamilton/ui";
 
 const GachaponClass = ({ scale }) => {
@@ -167,6 +167,7 @@ const GachaponBottomExitClass = ({ theme, scale }) => {
         box-shadow: inset 0 4px 20px 4px rgba(0, 0, 0, 0.125);
         border-top-left-radius: ${4 * scale}px;
         border-top-right-radius: ${4 * scale}px;
+        overflow: hidden;
     `;
 };
 
@@ -232,6 +233,68 @@ const ShellClass = ({ scale }) => {
     `;
 };
 
+const ExitShellAnimation = ({ scale }) => {
+    const exitHeight = (120 * scale) / 2 + (56 * scale) / 2 - 8 * scale;
+
+    return keyframes`
+        0% {
+            opacity: 1;
+            transform: translate(-50%, -${exitHeight}px) scale(1);
+        }
+
+        20% {
+            opacity: 1;
+            transform: translate(-50%, 0px) scale(1);
+        }
+
+        25% {
+            opacity: 1;
+            transform: translate(-50%, -${18 * scale}px) scale(1);
+        }
+
+        29% {
+            opacity: 1;
+            transform: translate(-50%, -${23 * scale}px) scale(1);
+        }
+
+        32% {
+            opacity: 1;
+            transform: translate(-50%, -${18 * scale}px) scale(1);
+        }
+
+        40% {
+            opacity: 1;
+            transform: translate(-50%, 0px) scale(1);
+        }
+
+        80% {
+            opacity: 1;
+            transform: translate(-50%, 0px) scale(1);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -${3 * scale}px) scale(1.2);
+        }
+    `;
+};
+
+const ExitShellClass = ({ scale }) => {
+    const exitHeight = (120 * scale) / 2 + (56 * scale) / 2 - 8 * scale;
+
+    return css`
+        position: absolute;
+        width: ${50 * scale}px;
+        height: ${50 * scale}px;
+        left: 50%;
+        bottom: 0;
+        opacity: 1;
+        transform: translate(-50%, -${exitHeight}px) scale(1);
+
+        animation: ${ExitShellAnimation({ scale })} 1s linear forwards;
+    `;
+};
+
 const ShellContentClass = ({ scale }) => {
     return css`
         z-index: 1;
@@ -258,7 +321,7 @@ const ShellBottomClass = ({ theme, scale }) => {
     `;
 };
 
-const Gachapon = ({ scale = 1 }) => {
+const Gachapon = ({ scale = 1, item }) => {
     const theme = useTheme();
 
     const shells = Array.from({ length: 11 }, (x, i) => {
@@ -271,7 +334,7 @@ const Gachapon = ({ scale = 1 }) => {
                 )}
             >
                 <div className={ShellContentClass({ ...theme, scale })} />
-                <div className={ShellBottomClass({ ...theme, scale, i })} />
+                <div className={ShellBottomClass({ ...theme, scale })} />
             </div>
         );
     });
@@ -285,7 +348,30 @@ const Gachapon = ({ scale = 1 }) => {
                 </div>
             </div>
             <div className={GachaponBottomClass({ ...theme, scale })}>
-                <div className={GachaponBottomExitClass({ ...theme, scale })} />
+                <div className={GachaponBottomExitClass({ ...theme, scale })}>
+                    {item ? (
+                        <div
+                            key={item.key}
+                            className={cn(
+                                ShellClass({ ...theme, scale }),
+                                ExitShellClass({ scale })
+                            )}
+                        >
+                            <div
+                                className={ShellContentClass({
+                                    ...theme,
+                                    scale,
+                                })}
+                            />
+                            <div
+                                className={ShellBottomClass({
+                                    ...theme,
+                                    scale,
+                                })}
+                            />
+                        </div>
+                    ) : null}
+                </div>
                 <div
                     className={GachaponBottomHandleClass({ ...theme, scale })}
                 />

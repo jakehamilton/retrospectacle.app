@@ -23,13 +23,14 @@ const RoomUserContentClass = ({ pad }) => {
 const TopContentClass = ({ pad }) => {
     return css`
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
 
         @media screen and (max-width: ${MEDIUM_BREAK}) {
             padding-top: ${pad(6)}px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: flex-start;
         }
     `;
@@ -60,7 +61,6 @@ const ContentClass = ({ pad }) => {
 
         @media screen and (max-width: ${MEDIUM_BREAK}) {
             width: auto;
-            padding-top: ${pad(6)}px;
         }
     `;
 };
@@ -145,7 +145,7 @@ const RoomUserContent = ({ room }) => {
     const [drafting, setDrafting] = useState(false);
     const [kind, setKind] = useState("needs-improvement");
     const [value, setValue] = useState("");
-    const [scale, setScale] = useState(1.5);
+    const [scale, setScale] = useState(1.25);
     const [showItems, setShowItems] = useState(false);
 
     const handleCancelDraft = () => {
@@ -184,7 +184,7 @@ const RoomUserContent = ({ room }) => {
 
     useEffect(() => {
         const handleLarge = () => {
-            setScale(1.5);
+            setScale(1.25);
         };
         const handleMedium = () => {
             setScale(1.0);
@@ -249,9 +249,10 @@ const RoomUserContent = ({ room }) => {
         <div className={RoomUserContentClass(theme)}>
             <Gap vertical size={6} />
             <div className={TopContentClass(theme)}>
-                <Gachapon scale={scale} />
+                <Gachapon scale={scale} item={room.state.item} />
                 <Gap horizontal size={6} />
                 <div className={ContentClass(theme)}>
+                    <Gap vertical size={4} />
                     <H2>{headingText}</H2>
                     <Gap vertical size={2} />
                     {drafting ? (

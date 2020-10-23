@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
-import { css } from "goober";
+import { css, keyframes } from "goober";
 import { Block, Button, useTheme, Gap, Text, H5 } from "@jakehamilton/ui";
 
 const UserItemClass = () => {
@@ -9,10 +9,27 @@ const UserItemClass = () => {
     `;
 };
 
+const ItemAnimation = () => {
+    return keyframes`
+        from {
+            opacity: 0;
+            transform: translateY(2px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+    `;
+};
+
 const ItemClass = () => {
     return css`
         border-radius: 4px;
         overflow: hidden;
+        opacity: 0;
+        transform: translateY(2px);
+        animation: ${ItemAnimation()} 0.5s 0.8s ease forwards;
     `;
 };
 
@@ -40,7 +57,7 @@ const UserItem = ({ item }) => {
 
     return (
         <div className={UserItemClass()}>
-            <div className={ItemClass()}>
+            <div className={ItemClass()} key={item.key}>
                 <Block padding={2} color="background.light">
                     <Text color="text" className={ActionTitleClass()}>
                         {title}
